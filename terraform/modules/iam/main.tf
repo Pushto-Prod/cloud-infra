@@ -1,12 +1,8 @@
-resource "aws_iam_role" "app_role" {
-name = "${var.project}-app-role"
-assume_role_policy = jsonencode({
+resource "aws_iam_role_policy" "app_policy" {
+name = "app-minimal-policy"
+role = aws_iam_role.app_role.id
+policy = jsonencode({
 Version = "2012-10-17"
-Statement = [{
-Action = "sts:AssumeRole"
-Effect = "Allow"
-Principal = { Service = "ec2.amazonaws.com" }
-}]
+Statement = [{ Effect = "Allow", Action = ["s3:GetObject"], Resource = "arn:aws:s3:::nimbus-data/*" }]
 })
 }
-variable "project" { default = "nimbus" }
